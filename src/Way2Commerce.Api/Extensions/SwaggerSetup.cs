@@ -40,6 +40,7 @@ namespace Way2Commerce.Api.Extensions
                     $"/swagger/{description.GroupName}/swagger.json",
                     description.GroupName);
                 }
+                options.RoutePrefix = string.Empty;
 
                 options.DocExpansion(DocExpansion.List);
             });
