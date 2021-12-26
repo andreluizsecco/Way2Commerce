@@ -17,13 +17,15 @@ public class CategoriaController : ApiControllerBase
     public async Task<ActionResult<IEnumerable<CategoriaResponse>>> ObterTodas()
     {
         var categorias = await _categoriaRepository.ObterTodosAsync();
-        return Ok(categorias);
+        var categoriasResponse = categorias.Select(categoria => CategoriaResponse.ConverterParaResponse(categoria));
+        return Ok(categoriasResponse);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoriaResponse>> ObterPorId(int id)
     {
         var categoria = await _categoriaRepository.ObterPorIdAsync(id);
-        return Ok(categoria);
+        var categoriaResponse = CategoriaResponse.ConverterParaResponse(categoria);
+        return Ok(categoriaResponse);
     }
 }
