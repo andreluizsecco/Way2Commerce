@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Way2Commerce.Data", "src\Wa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Way2Commerce.Api", "src\Way2Commerce.Api\Way2Commerce.Api.csproj", "{DACC224F-3880-4E66-BA51-2060E2DEB99D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Way2Commerce.Domain.Tests", "test\Way2Commerce.Domain.Tests\Way2Commerce.Domain.Tests.csproj", "{8CDDA110-7134-4ADF-A103-BB53A02BFC33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Way2Commerce.Data.Tests", "test\Way2Commerce.Data.Tests\Way2Commerce.Data.Tests.csproj", "{0A857674-B93B-4524-9799-3529E30C0B59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,14 @@ Global
 		{DACC224F-3880-4E66-BA51-2060E2DEB99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DACC224F-3880-4E66-BA51-2060E2DEB99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DACC224F-3880-4E66-BA51-2060E2DEB99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CDDA110-7134-4ADF-A103-BB53A02BFC33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CDDA110-7134-4ADF-A103-BB53A02BFC33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CDDA110-7134-4ADF-A103-BB53A02BFC33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CDDA110-7134-4ADF-A103-BB53A02BFC33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A857674-B93B-4524-9799-3529E30C0B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A857674-B93B-4524-9799-3529E30C0B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A857674-B93B-4524-9799-3529E30C0B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A857674-B93B-4524-9799-3529E30C0B59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +51,8 @@ Global
 		{549B657C-7F5E-401A-B053-3CE46DB47A1E} = {5B194365-E498-4DE5-BD41-485B20D488C8}
 		{AF403D63-BE8C-40CD-A76C-EE978448E51C} = {5B194365-E498-4DE5-BD41-485B20D488C8}
 		{DACC224F-3880-4E66-BA51-2060E2DEB99D} = {5B194365-E498-4DE5-BD41-485B20D488C8}
+		{8CDDA110-7134-4ADF-A103-BB53A02BFC33} = {0753C455-1E69-49BF-B290-89B68381A996}
+		{0A857674-B93B-4524-9799-3529E30C0B59} = {0753C455-1E69-49BF-B290-89B68381A996}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E684C85C-08EA-4CF9-9C52-8AEC8D930EF3}
