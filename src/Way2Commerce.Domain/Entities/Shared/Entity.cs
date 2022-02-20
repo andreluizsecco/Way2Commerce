@@ -1,7 +1,6 @@
-namespace Way2Commerce.Domain.Entities.Shared
+namespace Way2Commerce.Domain.Entities.Shared;
+
+public class Entity
 {
-    public class Entity
-    {
-        public int Id { get; protected set; }
-    }
+    public int Id { get; protected set; }
 }

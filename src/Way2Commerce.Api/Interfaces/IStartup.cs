@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-
 namespace Way2Commerce.Api.Interfaces;
 
 public interface IStartup
