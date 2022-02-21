@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Way2Commerce.Api.Controllers.Shared;
-using Way2Commerce.Api.DTOs.Request;
-using Way2Commerce.Api.DTOs.Response;
+using Way2Commerce.Application.DTOs.Request;
+using Way2Commerce.Application.DTOs.Response;
 using Way2Commerce.Domain.Interfaces.Services;
 
 namespace Way2Commerce.Api.Controllers.v1;

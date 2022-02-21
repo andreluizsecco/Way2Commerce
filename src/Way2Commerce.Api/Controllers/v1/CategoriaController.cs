@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Way2Commerce.Api.Controllers.Shared;
-using Way2Commerce.Api.DTOs.Response;
+using Way2Commerce.Application.DTOs.Response;
 using Way2Commerce.Domain.Interfaces.Repositories;
 
 namespace Way2Commerce.Api.Controllers.v1;
@@ -13,6 +14,7 @@ public class CategoriaController : ApiControllerBase
     public CategoriaController(ICategoriaRepository categoriaRepository) =>
         _categoriaRepository = categoriaRepository;
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoriaResponse>>> ObterTodas()
     {

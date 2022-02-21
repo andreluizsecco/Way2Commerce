@@ -16,6 +16,7 @@ public class Startup : Interfaces.IStartup
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddVersioning();
         services.AddSwagger();
+        services.AddAuthentication(Configuration);
         services.RegisterServices(Configuration);
     }
 
@@ -23,6 +24,7 @@ public class Startup : Interfaces.IStartup
     {
         app.UseSwaggerUI();
         app.UseHttpsRedirection();
+        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
     }
