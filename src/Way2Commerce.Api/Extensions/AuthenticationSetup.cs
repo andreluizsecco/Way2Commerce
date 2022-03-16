@@ -1,8 +1,11 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Way2Commerce.Identity;
 using Way2Commerce.Identity.Configurations;
+using Way2Commerce.Identity.PolicyRequirements;
 
 namespace Way2Commerce.Api.Extensions
 {
@@ -54,6 +57,16 @@ namespace Way2Commerce.Api.Extensions
             }).AddJwtBearer(options => 
             {
                 options.TokenValidationParameters = tokenValidationParameters;
+            });
+        }
+
+        public static void AddAuthorizationPolicies(this IServiceCollection services)
+        {
+            services.AddSingleton<IAuthorizationHandler, HorarioComercialHandler>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Policies.HorarioComercial, policy =>
+                    policy.Requirements.Add(new HorarioComercialRequirement()));
             });
         }
     }

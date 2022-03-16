@@ -17,6 +17,7 @@ public class Startup : Interfaces.IStartup
         services.AddVersioning();
         services.AddSwagger();
         services.AddAuthentication(Configuration);
+        services.AddAuthorizationPolicies();
         services.RegisterServices(Configuration);
     }
 
