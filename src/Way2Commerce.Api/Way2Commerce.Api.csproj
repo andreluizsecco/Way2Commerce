@@ -19,6 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Way2Commerce.Domain\Way2Commerce.Domain.csproj" />
     <ProjectReference Include="..\Way2Commerce.Data\Way2Commerce.Data.csproj" />
+    <ProjectReference Include="..\Way2Commerce.Identity\Way2Commerce.Identity.csproj" />
+    <ProjectReference Include="..\Way2Commerce.Application\Way2Commerce.Application.csproj" />
   </ItemGroup>
 
 </Project>

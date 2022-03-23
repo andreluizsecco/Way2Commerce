@@ -1,6 +1,6 @@
 using Way2Commerce.Domain.Entities;
 
-namespace Way2Commerce.Api.DTOs.Request;
+namespace Way2Commerce.Application.DTOs.Request;
 
 public class InsercaoProdutoRequest
 {

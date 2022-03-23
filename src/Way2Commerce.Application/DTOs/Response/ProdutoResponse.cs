@@ -1,6 +1,6 @@
 using Way2Commerce.Domain.Entities;
 
-namespace Way2Commerce.Api.DTOs.Response;
+namespace Way2Commerce.Application.DTOs.Response;
 
 public class ProdutoResponse
 {
