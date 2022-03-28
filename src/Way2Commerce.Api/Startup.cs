@@ -12,6 +12,7 @@ public class Startup : Interfaces.IStartup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddCors();
         services.AddControllers();
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddVersioning();
@@ -27,6 +28,11 @@ public class Startup : Interfaces.IStartup
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseCors(builder => builder
+            .SetIsOriginAllowed(orign => true)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
         app.MapControllers();
     }
 }
