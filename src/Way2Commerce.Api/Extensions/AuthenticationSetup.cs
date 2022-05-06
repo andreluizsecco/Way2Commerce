@@ -21,7 +21,8 @@ namespace Way2Commerce.Api.Extensions
                 options.Issuer = jwtAppSettingOptions[nameof(JwtOptions.Issuer)];
                 options.Audience = jwtAppSettingOptions[nameof(JwtOptions.Audience)];
                 options.SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
-                options.Expiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.Expiration)] ?? "0");
+                options.AccessTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.AccessTokenExpiration)] ?? "0");
+                options.RefreshTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.RefreshTokenExpiration)] ?? "0");
             });
 
             services.Configure<IdentityOptions>(options =>
