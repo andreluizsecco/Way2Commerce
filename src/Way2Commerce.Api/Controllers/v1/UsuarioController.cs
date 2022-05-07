@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Way2Commerce.Api.Controllers.Shared;
 using Way2Commerce.Application.DTOs.Request;
@@ -36,6 +38,22 @@ public class UsuarioController : ApiControllerBase
             return BadRequest();
 
         var resultado = await _identityService.Login(usuarioLogin);
+        if (resultado.Sucesso)
+            return Ok(resultado);
+        
+        return Unauthorized(resultado);
+    }
+
+    [Authorize]
+    [HttpPost("refresh-login")]
+    public async Task<ActionResult<UsuarioCadastroResponse>> RefreshLogin()
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        var usuarioId = identity?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (usuarioId == null)
+            return BadRequest();
+
+        var resultado = await _identityService.LoginSemSenha(usuarioId);
         if (resultado.Sucesso)
             return Ok(resultado);
         

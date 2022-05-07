@@ -32,7 +32,7 @@ namespace Way2Commerce.Identity.Services
                 Email = usuarioCadastro.Email,
                 EmailConfirmed = true
             };
-            
+
             var result = await _userManager.CreateAsync(identityUser, usuarioCadastro.Senha);
             if (result.Succeeded)
                 await _userManager.SetLockoutEnabledAsync(identityUser, false);
@@ -48,9 +48,9 @@ namespace Way2Commerce.Identity.Services
         {
             var result = await _signInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha, false, true);
             if (result.Succeeded)
-                return await GerarToken(usuarioLogin.Email);
-            
-            var usuarioLoginResponse = new UsuarioLoginResponse(result.Succeeded);
+                return await GerarCredenciais(usuarioLogin.Email);
+
+            var usuarioLoginResponse = new UsuarioLoginResponse();
             if (!result.Succeeded)
             {
                 if (result.IsLockedOut)
@@ -66,45 +66,76 @@ namespace Way2Commerce.Identity.Services
             return usuarioLoginResponse;
         }
 
-        private async Task<UsuarioLoginResponse> GerarToken(string email)
+        public async Task<UsuarioLoginResponse> LoginSemSenha(string usuarioId)
+        {
+            var usuarioLoginResponse = new UsuarioLoginResponse();
+            var usuario = await _userManager.FindByIdAsync(usuarioId);
+            
+            if (await _userManager.IsLockedOutAsync(usuario))
+                usuarioLoginResponse.AdicionarErro("Essa conta está bloqueada");
+            else if (!await _userManager.IsEmailConfirmedAsync(usuario))
+                usuarioLoginResponse.AdicionarErro("Essa conta precisa confirmar seu e-mail antes de realizar o login");
+            
+            if (usuarioLoginResponse.Sucesso)
+                return await GerarCredenciais(usuario.Email);
+
+            return usuarioLoginResponse;
+        }
+
+        private async Task<UsuarioLoginResponse> GerarCredenciais(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            var tokenClaims = await ObterClaims(user);
+            var accessTokenClaims = await ObterClaims(user, adicionarClaimsUsuario: true);
+            var refreshTokenClaims = await ObterClaims(user, adicionarClaimsUsuario: false);
 
-            var dataExpiracao = DateTime.Now.AddSeconds(_jwtOptions.Expiration);
+            var dataExpiracaoAccessToken = DateTime.Now.AddSeconds(_jwtOptions.AccessTokenExpiration);
+            var dataExpiracaoRefreshToken = DateTime.Now.AddSeconds(_jwtOptions.RefreshTokenExpiration);
 
-            var jwt = new JwtSecurityToken(
-                issuer: _jwtOptions.Issuer,
-                audience: _jwtOptions.Audience,
-                claims: tokenClaims,
-                notBefore: DateTime.Now,
-                expires: dataExpiracao,
-                signingCredentials: _jwtOptions.SigningCredentials);
-
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var accessToken = GerarToken(accessTokenClaims, dataExpiracaoAccessToken);
+            var refreshToken = GerarToken(refreshTokenClaims, dataExpiracaoRefreshToken);
 
             return new UsuarioLoginResponse
             (
                 sucesso: true,
-                token: token,
-                dataExpiracao: dataExpiracao
+                accessToken: accessToken,
+                refreshToken: refreshToken
             );
         }
 
-        private async Task<IList<Claim>> ObterClaims(IdentityUser user)
+        private string GerarToken(IEnumerable<Claim> claims, DateTime dataExpiracao)
         {
-            var claims = await _userManager.GetClaimsAsync(user);
-            var roles = await _userManager.GetRolesAsync(user);
+            var jwt = new JwtSecurityToken(
+                issuer: _jwtOptions.Issuer,
+                audience: _jwtOptions.Audience,
+                claims: claims,
+                notBefore: DateTime.Now,
+                expires: dataExpiracao,
+                signingCredentials: _jwtOptions.SigningCredentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
+        }
+
+        private async Task<IList<Claim>> ObterClaims(IdentityUser user, bool adicionarClaimsUsuario)
+        {
+            var claims = new List<Claim>();
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()));
-            
-            foreach (var role in roles)
-                claims.Add(new Claim("role", role));
-            
+
+            if (adicionarClaimsUsuario)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                claims.AddRange(userClaims);
+
+                foreach (var role in roles)
+                    claims.Add(new Claim("role", role));
+            }
+
             return claims;
         }
     }
