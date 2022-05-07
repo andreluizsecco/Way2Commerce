@@ -4,7 +4,7 @@ namespace Way2Commerce.Application.DTOs.Response
 {
     public class UsuarioLoginResponse
     {
-        public bool Sucesso { get; private set; }
+        public bool Sucesso  => Erros.Count == 0;
         
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string AccessToken { get; private set; }
@@ -16,10 +16,7 @@ namespace Way2Commerce.Application.DTOs.Response
         public UsuarioLoginResponse() =>
             Erros = new List<string>();
 
-        public UsuarioLoginResponse(bool sucesso = true) : this() =>
-            Sucesso = sucesso;
-
-        public UsuarioLoginResponse(bool sucesso, string accessToken, string refreshToken) : this(sucesso)
+        public UsuarioLoginResponse(bool sucesso, string accessToken, string refreshToken) : this()
         {
             AccessToken = accessToken;
             RefreshToken = refreshToken;

@@ -50,7 +50,7 @@ namespace Way2Commerce.Identity.Services
             if (result.Succeeded)
                 return await GerarCredenciais(usuarioLogin.Email);
 
-            var usuarioLoginResponse = new UsuarioLoginResponse(result.Succeeded);
+            var usuarioLoginResponse = new UsuarioLoginResponse();
             if (!result.Succeeded)
             {
                 if (result.IsLockedOut)
@@ -62,6 +62,22 @@ namespace Way2Commerce.Identity.Services
                 else
                     usuarioLoginResponse.AdicionarErro("Usuário ou senha estão incorretos");
             }
+
+            return usuarioLoginResponse;
+        }
+
+        public async Task<UsuarioLoginResponse> LoginSemSenha(string usuarioId)
+        {
+            var usuarioLoginResponse = new UsuarioLoginResponse();
+            var usuario = await _userManager.FindByIdAsync(usuarioId);
+            
+            if (await _userManager.IsLockedOutAsync(usuario))
+                usuarioLoginResponse.AdicionarErro("Essa conta está bloqueada");
+            else if (!await _userManager.IsEmailConfirmedAsync(usuario))
+                usuarioLoginResponse.AdicionarErro("Essa conta precisa confirmar seu e-mail antes de realizar o login");
+            
+            if (usuarioLoginResponse.Sucesso)
+                return await GerarCredenciais(usuario.Email);
 
             return usuarioLoginResponse;
         }
