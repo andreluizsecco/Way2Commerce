@@ -15,6 +15,16 @@ public class CategoriaController : ApiControllerBase
     public CategoriaController(ICategoriaRepository categoriaRepository) =>
         _categoriaRepository = categoriaRepository;
 
+    /// <summary>
+    /// Obtém todas as categorias.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <returns></returns>
+    /// <response code="200">Retorna todas as categorias cadastradas</response>
+    /// <response code="500">Retorna erros caso ocorram</response>
+    [ProducesResponseType(typeof(IEnumerable<CategoriaResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoriaResponse>>> ObterTodas()
     {
@@ -23,6 +33,20 @@ public class CategoriaController : ApiControllerBase
         return Ok(categoriasResponse);
     }
 
+    
+    /// <summary>
+    /// Obtém categoria por Id.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <param name="id">Id da categoria</param>
+    /// <returns></returns>
+    /// <response code="200">Retorna os dados da categoria</response>
+    /// <response code="404">Retorno caso a categoria não seja encontrada</response>
+    /// <response code="500">Retorna erros caso ocorram</response>
+    [ProducesResponseType(typeof(IEnumerable<CategoriaResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoriaResponse>> ObterPorId(int id)
     {
