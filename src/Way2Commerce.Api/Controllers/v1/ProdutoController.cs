@@ -18,6 +18,16 @@ public class ProdutoController : ApiControllerBase
     public ProdutoController(IProdutoService produtoService) =>
         _produtoService = produtoService;
 
+    /// <summary>
+    /// Obtém todos os produtos.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <returns></returns>
+    /// <response code="200">Retorna todos os produtos cadastrados</response>
+    /// <response code="500">Retorna erros caso ocorram</response>
+    [ProducesResponseType(typeof(IEnumerable<ProdutoResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorize(ClaimTypes.Produto, "Ler")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProdutoResponse>>> ObterTodos()
@@ -27,6 +37,19 @@ public class ProdutoController : ApiControllerBase
         return Ok(produtosResponse);
     }
 
+    /// <summary>
+    /// Obtém produto por Id.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <param name="id">Id do produto</param>
+    /// <returns></returns>
+    /// <response code="200">Retorna os dados do produto</response>
+    /// <response code="404">Retorno caso o produto não seja encontrado</response>
+    /// <response code="500">Retorna erros caso ocorram</response>
+    [ProducesResponseType(typeof(IEnumerable<ProdutoResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorize(ClaimTypes.Produto, "Ler")]
     [HttpGet("{id}")]
     public async Task<ActionResult<ProdutoResponse>> ObterPorId(int id)
@@ -39,6 +62,19 @@ public class ProdutoController : ApiControllerBase
         return Ok(produtoResponse);
     }
 
+    /// <summary>
+    /// Insere um produto.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <param name="produtoRequest">Dados do produto</param>
+    /// <returns></returns>
+    /// <response code="201">Retorna o Id do produto criado</response>
+    /// <response code="400">Retorna erros de validação</response>
+    /// <response code="500">Retorna erros caso ocorram</response>
+    [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorizeAttribute(ClaimTypes.Produto, "Inserir")]
     [HttpPost]
     public async Task<ActionResult<int>> Inserir(InsercaoProdutoRequest produtoRequest)
@@ -48,6 +84,19 @@ public class ProdutoController : ApiControllerBase
         return CreatedAtAction(nameof(ObterPorId), new { id = id }, id);
     }
 
+    /// <summary>
+    /// Atualiza um produto.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <param name="produtoRequest">Dados do produto</param>
+    /// <returns></returns>
+    /// <response code="200">Sucesso ao atualizar produto</response>
+    /// <response code="400">Retorna erros de validação</response>
+    /// <response code="500">Retorna erros caso ocorram</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorizeAttribute(ClaimTypes.Produto, "Atualizar")]
     [HttpPut]
     public async Task<ActionResult> Atualizar(AtualizacaoProdutoRequest produtoRequest)
@@ -57,6 +106,19 @@ public class ProdutoController : ApiControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Exclui um produto.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <param name="id">Id do produto</param>
+    /// <returns></returns>
+    /// <response code="200">Sucesso ao excluir produto</response>
+    /// <response code="400">Retorna erros de validação</response>
+    /// <response code="500">Retorna erros caso ocorram</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.HorarioComercial)]
     [ClaimsAuthorizeAttribute(ClaimTypes.Produto, "Excluir")]
     [HttpDelete("{id}")]

@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -11,6 +12,10 @@ public static class SwaggerSetup
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            options.IncludeXmlComments(xmlPath);
+            
             options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Way2Commerce.Api",
