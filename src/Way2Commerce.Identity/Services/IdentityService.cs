@@ -123,7 +123,7 @@ namespace Way2Commerce.Identity.Services
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString()));
 
             if (adicionarClaimsUsuario)
             {

@@ -1,4 +1,3 @@
-using Hellang.Middleware.ProblemDetails;
 using Way2Commerce.Api.Extensions;
 using Way2Commerce.Api.IoC;
 
@@ -16,7 +15,6 @@ builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseProblemDetails();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseAuthentication();
