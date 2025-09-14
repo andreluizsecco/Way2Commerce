@@ -6,5 +6,5 @@ namespace Way2Commerce.Api.Controllers.Shared;
 // Isso só não é possível ainda pois a biblioteca de versionamento não suporta isso.
 // Essa feature está em progresso e mapeada para vesão 3: https://github.com/dotnet/aspnet-api-versioning/issues/230
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}")]
 public class ApiControllerBase : ControllerBase { }

@@ -30,7 +30,7 @@ public class UsuarioController : ApiControllerBase
     [ProducesResponseType(typeof(UsuarioCadastroResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [HttpPost("cadastro")]
+    [HttpPost("usuario/cadastro")]
     public async Task<IActionResult> Cadastrar(UsuarioCadastroRequest usuarioCadastro)
     {
         if (!ModelState.IsValid)
@@ -63,7 +63,7 @@ public class UsuarioController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [HttpPost("login")]
+    [HttpPost("usuario/login")]
     public async Task<ActionResult<UsuarioCadastroResponse>> Login(UsuarioLoginRequest usuarioLogin)
     {
         if (!ModelState.IsValid)
@@ -91,7 +91,7 @@ public class UsuarioController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [Authorize]
-    [HttpPost("refresh-login")]
+    [HttpPost("usuario/refresh-login")]
     public async Task<ActionResult<UsuarioCadastroResponse>> RefreshLogin()
     {
         var identity = HttpContext.User.Identity as ClaimsIdentity;

@@ -26,15 +26,16 @@ public class ProdutoController : ApiControllerBase
     /// <returns></returns>
     /// <response code="200">Retorna todos os produtos cadastrados</response>
     /// <response code="500">Retorna erros caso ocorram</response>
-    [ProducesResponseType(typeof(IEnumerable<ProdutoResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiCollectionResponse<ProdutoResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorize(ClaimTypes.Produto, "Ler")]
+    [Route("produtos")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProdutoResponse>>> ObterTodos()
+    public async Task<ActionResult<ApiCollectionResponse<ProdutoResponse>>> ObterTodos()
     {
         var produtos = await _produtoService.ObterTodosAsync();
         var produtosResponse = produtos.Select(produto => ProdutoResponse.ConverterParaResponse(produto));
-        return Ok(produtosResponse);
+        return Ok(produtosResponse.ToApiCollectionResponse());
     }
 
     /// <summary>
@@ -51,7 +52,7 @@ public class ProdutoController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorize(ClaimTypes.Produto, "Ler")]
-    [HttpGet("{id}")]
+    [HttpGet("produtos/{id}")]
     public async Task<ActionResult<ProdutoResponse>> ObterPorId(int id)
     {
         var produto = await _produtoService.ObterPorIdAsync(id);
@@ -76,7 +77,7 @@ public class ProdutoController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorizeAttribute(ClaimTypes.Produto, "Inserir")]
-    [HttpPost]
+    [HttpPost("produtos")]
     public async Task<ActionResult<int>> Inserir(InsercaoProdutoRequest produtoRequest)
     {
         var produto = InsercaoProdutoRequest.ConverterParaEntidade(produtoRequest);
@@ -98,7 +99,7 @@ public class ProdutoController : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ClaimsAuthorizeAttribute(ClaimTypes.Produto, "Atualizar")]
-    [HttpPut]
+    [HttpPut("produtos")]
     public async Task<ActionResult> Atualizar(AtualizacaoProdutoRequest produtoRequest)
     {
         var produto = AtualizacaoProdutoRequest.ConverterParaEntidade(produtoRequest);
@@ -121,7 +122,7 @@ public class ProdutoController : ApiControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [Authorize(Policy = Policies.HorarioComercial)]
     [ClaimsAuthorizeAttribute(ClaimTypes.Produto, "Excluir")]
-    [HttpDelete("{id}")]
+    [HttpDelete("produtos/{id}")]
     public async Task<ActionResult> Excluir(int id)
     {
         await _produtoService.RemoverPorIdAsync(id);
