@@ -23,14 +23,15 @@ public class CategoriaController : ApiControllerBase
     /// <returns></returns>
     /// <response code="200">Retorna todas as categorias cadastradas</response>
     /// <response code="500">Retorna erros caso ocorram</response>
-    [ProducesResponseType(typeof(IEnumerable<CategoriaResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiCollectionResponse<CategoriaResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [Route("categorias")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CategoriaResponse>>> ObterTodas()
+    public async Task<ActionResult<ApiCollectionResponse<CategoriaResponse>>> ObterTodas()
     {
         var categorias = await _categoriaRepository.ObterTodosAsync();
         var categoriasResponse = categorias.Select(categoria => CategoriaResponse.ConverterParaResponse(categoria));
-        return Ok(categoriasResponse);
+        return Ok(categoriasResponse.ToApiCollectionResponse());
     }
 
     
@@ -47,7 +48,7 @@ public class CategoriaController : ApiControllerBase
     [ProducesResponseType(typeof(IEnumerable<CategoriaResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [HttpGet("{id}")]
+    [HttpGet("categorias/{id}")]
     public async Task<ActionResult<CategoriaResponse>> ObterPorId(int id)
     {
         var categoria = await _categoriaRepository.ObterPorIdAsync(id);
